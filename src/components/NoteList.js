@@ -15,6 +15,9 @@ const NoteList = () => {
     updateDateTo: "",
     category: "",
   });
+  const [users, setUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [usersWithNotes, setUsersWithNotes] = useState([]);
 
   const navigate = useNavigate();
 
@@ -28,11 +31,13 @@ const NoteList = () => {
             sort,
             search,
             filters,
+            users: selectedUsers,
           },
         });
         setNotes(response.data.notes || []);
         setTotalPages(response.data.totalPages);
         setCurrentPage(response.data.currentPage);
+        setUsersWithNotes(response.data.usersWithNotes);
       } catch (error) {
         console.error("Failed to fetch notes:", error);
         setNotes([]); // Set an empty array on error
@@ -40,7 +45,7 @@ const NoteList = () => {
     };
 
     fetchNotes();
-  }, [currentPage, sort, search, filters]);
+  }, [currentPage, sort, search, filters, selectedUsers]);
 
   const handleDelete = async (id) => {
     try {
@@ -58,6 +63,28 @@ const NoteList = () => {
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
+
+  const handleUserChange = (e) => {
+    const value = e.target.value;
+    setSelectedUsers(value === "all" ? users.map((user) => user._id) : [value]);
+  };
+
+  const handleSelectAllUsers = () => {
+    setSelectedUsers(usersWithNotes);
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get("/users"); // Assuming you have an endpoint to get all users
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <div>
@@ -120,6 +147,20 @@ const NoteList = () => {
             onChange={handleFilterChange}
           />
         </div>
+        <div>
+          <label>User:</label>
+          <select onChange={handleUserChange} value={selectedUsers}>
+            <option value="all">Select All</option>
+            {users.map((user) => (
+              <option key={user._id} value={user._id}>
+                {user.username}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleSelectAllUsers}>
+            Select All Users with Notes
+          </button>
+        </div>
       </div>
       <button onClick={() => navigate("/categories")}>Manage Categories</button>
       <Link to="/notes/create">Create Note</Link>
@@ -129,7 +170,7 @@ const NoteList = () => {
             <li key={note._id}>
               <h3>{note.title}</h3>
               <p>{note.description}</p>
-              <small>Category: {note.category}</small>
+              <small>Category: {note.category.name}</small>
               <Link to={`/notes/edit/${note._id}`}>Edit</Link>
               <button onClick={() => handleDelete(note._id)}>Delete</button>
             </li>
