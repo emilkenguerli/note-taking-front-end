@@ -15,12 +15,13 @@ const EditNote = () => {
     const fetchNote = async () => {
       try {
         const response = await api.get(`/notes/${id}`);
-        setTitle(response.data.title);
-        setDescription(response.data.description);
-        setCategory(response.data.category ? response.data.category._id : "");
-        setIsPublic(response.data.public);
+        const note = response.data;
+        setTitle(note.title);
+        setDescription(note.description);
+        setCategory(note.category ? note.category._id : "");
+        setIsPublic(note.public);
       } catch (error) {
-        console.error("Failed to fetch note:", error);
+        console.error("Failed to fetch note details:", error);
       }
     };
 
@@ -39,24 +40,16 @@ const EditNote = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const noteData = { title, description, public: isPublic };
-    if (category) {
-      noteData.category = category;
-    }
     try {
-      await api.patch(`/notes/${id}`, noteData);
+      await api.patch(`/notes/${id}`, {
+        title,
+        description,
+        category,
+        public: isPublic,
+      });
       navigate("/notes");
     } catch (error) {
       console.error("Failed to update note:", error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await api.delete(`/notes/${id}`);
-      navigate("/notes");
-    } catch (error) {
-      console.error("Failed to delete note:", error);
     }
   };
 
@@ -82,14 +75,14 @@ const EditNote = () => {
           onChange={(e) => setCategory(e.target.value)}
           style={styles.input}
         >
-          <option value="">Select a category</option>
+          <option value="">Select Category</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
               {cat.name}
             </option>
           ))}
         </select>
-        <label>
+        <label style={styles.checkboxLabel}>
           <input
             type="checkbox"
             checked={isPublic}
@@ -101,12 +94,6 @@ const EditNote = () => {
           Update
         </button>
       </form>
-      <button
-        onClick={handleDelete}
-        style={{ ...styles.button, background: "#dc3545" }}
-      >
-        Delete
-      </button>
     </div>
   );
 };
@@ -140,7 +127,11 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    margin: "10px 0",
+  },
+  checkboxLabel: {
+    margin: "10px",
+    display: "flex",
+    alignItems: "center",
   },
 };
 
