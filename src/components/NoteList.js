@@ -15,7 +15,7 @@ const NoteList = () => {
     updateDateTo: "",
     category: "",
   });
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); // Ensure users is an array
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [usersWithNotes, setUsersWithNotes] = useState([]);
 
@@ -34,7 +34,7 @@ const NoteList = () => {
             users: selectedUsers,
           },
         });
-        setNotes(response.data.notes || []);
+        setNotes(Array.isArray(response.data.notes) ? response.data.notes : []);
         setTotalPages(response.data.totalPages);
         setCurrentPage(response.data.currentPage);
         setUsersWithNotes(response.data.usersWithNotes);
@@ -66,7 +66,11 @@ const NoteList = () => {
 
   const handleUserChange = (e) => {
     const value = e.target.value;
-    setSelectedUsers(value === "all" ? users.map((user) => user._id) : [value]);
+    if (value === "all") {
+      setSelectedUsers(users.map((user) => user._id));
+    } else {
+      setSelectedUsers([value]);
+    }
   };
 
   const handleSelectAllUsers = () => {
@@ -76,8 +80,11 @@ const NoteList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get("/users"); // Assuming you have an endpoint to get all users
-        setUsers(response.data);
+        const response = await api.get("/user");
+        const userData = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
+        setUsers(userData);
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
@@ -149,7 +156,10 @@ const NoteList = () => {
         </div>
         <div>
           <label>User:</label>
-          <select onChange={handleUserChange} value={selectedUsers}>
+          <select
+            onChange={handleUserChange}
+            value={selectedUsers.length > 0 ? selectedUsers[0] : "all"}
+          >
             <option value="all">Select All</option>
             {users.map((user) => (
               <option key={user._id} value={user._id}>
