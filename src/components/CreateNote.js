@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 
 const EditNote = () => {
@@ -7,7 +7,7 @@ const EditNote = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -36,7 +36,7 @@ const EditNote = () => {
         { title, description, category },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      history.push("/notes");
+      navigate("/notes");
     } catch (error) {
       console.error("Failed to update note:", error);
     }

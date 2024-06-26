@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { setToken } from "../store/actions/authActions";
 
@@ -8,14 +8,14 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", { username, password });
       dispatch(setToken(response.data.token));
-      history.push("/notes");
+      navigate("/notes");
     } catch (error) {
       console.error("Login failed:", error);
     }

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       await api.post("/auth/register", { username, password, email });
-      history.push("/login");
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
     }

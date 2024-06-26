@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import NoteList from "./components/NoteList";
@@ -9,14 +9,14 @@ import EditNote from "./components/EditNote";
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/notes" component={NoteList} />
-        <Route path="/create" component={CreateNote} />
-        <Route path="/edit/:id" component={EditNote} />
-        <Route path="/" component={Login} />
-      </Switch>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/notes" element={<NoteList />} />
+        <Route path="/create" element={<CreateNote />} />
+        <Route path="/edit/:id" element={<EditNote />} />
+        <Route path="/" element={<Login />} />
+      </Routes>
     </Router>
   );
 };
