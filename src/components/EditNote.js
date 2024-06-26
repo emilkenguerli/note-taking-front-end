@@ -7,38 +7,57 @@ const EditNote = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [isPublic, setIsPublic] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await api.get(`/notes/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get(`/notes/${id}`);
         setTitle(response.data.title);
         setDescription(response.data.description);
         setCategory(response.data.category);
+        setIsPublic(response.data.public);
       } catch (error) {
         console.error("Failed to fetch note:", error);
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get("/categories");
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
     fetchNote();
+    fetchCategories();
   }, [id]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await api.patch(
-        `/notes/${id}`,
-        { title, description, category },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.patch(`/notes/${id}`, {
+        title,
+        description,
+        category,
+        public: isPublic,
+      });
       navigate("/notes");
     } catch (error) {
       console.error("Failed to update note:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/notes/${id}`);
+      navigate("/notes");
+    } catch (error) {
+      console.error("Failed to delete note:", error);
     }
   };
 
@@ -57,14 +76,25 @@ const EditNote = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+        <label>
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+          />
+          Public
+        </label>
         <button type="submit">Update</button>
       </form>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };

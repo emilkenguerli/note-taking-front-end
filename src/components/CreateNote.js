@@ -1,51 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
-const EditNote = () => {
-  const { id } = useParams();
+const CreateNote = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [isPublic, setIsPublic] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchNote = async () => {
+    const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await api.get(`/notes/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setTitle(response.data.title);
-        setDescription(response.data.description);
-        setCategory(response.data.category);
+        const response = await api.get("/categories");
+        setCategories(response.data.categories);
       } catch (error) {
-        console.error("Failed to fetch note:", error);
+        console.error("Failed to fetch categories:", error);
       }
     };
 
-    fetchNote();
-  }, [id]);
+    fetchCategories();
+  }, []);
 
-  const handleUpdate = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await api.patch(
-        `/notes/${id}`,
-        { title, description, category },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post("/notes", {
+        title,
+        description,
+        category,
+        public: isPublic,
+      });
       navigate("/notes");
     } catch (error) {
-      console.error("Failed to update note:", error);
+      console.error("Failed to create note:", error);
     }
   };
 
   return (
     <div>
-      <h2>Edit Note</h2>
-      <form onSubmit={handleUpdate}>
+      <h2>Create Note</h2>
+      <form onSubmit={handleCreate}>
         <input
           type="text"
           placeholder="Title"
@@ -57,16 +53,26 @@ const EditNote = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-        <button type="submit">Update</button>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+        <label>
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+          />
+          Public
+        </label>
+        <button type="submit">Create</button>
       </form>
     </div>
   );
 };
 
-export default EditNote;
+export default CreateNote;
