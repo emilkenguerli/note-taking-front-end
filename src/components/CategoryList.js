@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -12,32 +14,39 @@ const CategoryList = () => {
         const response = await api.get("/categories", {
           params: { page: currentPage, limit: 10 },
         });
-        setCategories(response.data.categories || []);
+        setCategories(response.data.categories);
         setTotalPages(response.data.totalPages);
         setCurrentPage(response.data.currentPage);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
-        setCategories([]);
       }
     };
 
     fetchCategories();
   }, [currentPage]);
 
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/categories/${id}`);
+      setCategories(categories.filter((category) => category._id !== id));
+    } catch (error) {
+      console.error("Failed to delete category:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Categories</h2>
+      <Link to="/categories/create">Create Category</Link>
       <ul>
-        {categories.length > 0 ? (
-          categories.map((category) => (
-            <li key={category._id}>
-              <h3>{category.name}</h3>
-              <p>{category.description}</p>
-            </li>
-          ))
-        ) : (
-          <li>No categories available</li>
-        )}
+        {categories.map((category) => (
+          <li key={category._id}>
+            <h3>{category.name}</h3>
+            <p>{category.description}</p>
+            <Link to={`/categories/edit/${category._id}`}>Edit</Link>
+            <button onClick={() => handleDelete(category._id)}>Delete</button>
+          </li>
+        ))}
       </ul>
       <div>
         <button
