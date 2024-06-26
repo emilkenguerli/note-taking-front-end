@@ -12,7 +12,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Clone the Repository
 
-`https://github.com/emilkenguerli/note-taking-front-end.git`
+`git clone https://github.com/emilkenguerli/note-taking-front-end.git`
 
 ## Available Scripts
 
