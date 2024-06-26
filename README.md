@@ -20,6 +20,11 @@ Before you begin, ensure you have met the following requirements:
 
 In the project directory, you can run:
 
+
+### `npm install`
+
+To install and get necessary packages.
+
 ### `npm start`
 
 Starts the development server.
