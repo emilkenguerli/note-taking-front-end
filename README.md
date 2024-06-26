@@ -12,9 +12,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Clone the Repository
 
-`bash
-git clone https://github.com/your-username/note-taking-app-frontend.git
-cd note-taking-app-frontend`
+`https://github.com/emilkenguerli/note-taking-front-end.git`
 
 ## Available Scripts
 
