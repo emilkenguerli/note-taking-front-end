@@ -14,6 +14,8 @@ Before you begin, ensure you have met the following requirements:
 
 `git clone https://github.com/emilkenguerli/note-taking-front-end.git`
 
+### Create an .env using the example as reference
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -24,10 +26,13 @@ Starts the development server.
 
 ## Features
 
-- User Registration and Login
-- Create, View, Edit, and Delete Notes
-- Manage Categories
-- Search and Filter Notes
+- User Registration and Login using Username or Email
+- Create, View, Edit, and Delete Notes on a list
+- Manage Categories List and Edit, Update, or Delete (cannot delete category if a note is assigned to it)
+- Search Notes using a combination of regex and fuzzy search
+- Filter Notes by Creation Date, Update Date, Category, User (defaults to the current user)
+- Sort Notes by Creation Date, Update Date, Category, Title
+- Filter out all users that didn't have notes if Select All users is selected
 - Responsive Design
 
 ## Technologies Used
