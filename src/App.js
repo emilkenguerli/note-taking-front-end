@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/store";
+import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import NoteList from "./components/NoteList";
@@ -18,6 +19,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <Router>
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/notes" element={<NoteList />} />
