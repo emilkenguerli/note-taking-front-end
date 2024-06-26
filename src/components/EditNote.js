@@ -17,7 +17,7 @@ const EditNote = () => {
         const response = await api.get(`/notes/${id}`);
         setTitle(response.data.title);
         setDescription(response.data.description);
-        setCategory(response.data.category._id);
+        setCategory(response.data.category ? response.data.category._id : "");
         setIsPublic(response.data.public);
       } catch (error) {
         console.error("Failed to fetch note:", error);
@@ -39,13 +39,12 @@ const EditNote = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    const noteData = { title, description, public: isPublic };
+    if (category) {
+      noteData.category = category;
+    }
     try {
-      await api.patch(`/notes/${id}`, {
-        title,
-        description,
-        category,
-        public: isPublic,
-      });
+      await api.patch(`/notes/${id}`, noteData);
       navigate("/notes");
     } catch (error) {
       console.error("Failed to update note:", error);

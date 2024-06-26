@@ -195,7 +195,7 @@ const NoteList = () => {
               <h3>{note.title}</h3>
               <p>{note.description}</p>
               <small style={styles.category}>
-                Category: {note.category.name}
+                Category: {note.category ? note.category.name : "None"}
               </small>
               <div style={styles.actions}>
                 <Link to={`/notes/edit/${note._id}`} style={styles.button}>
