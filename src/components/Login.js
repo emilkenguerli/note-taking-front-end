@@ -5,7 +5,7 @@ import api from "../services/api";
 import { setToken } from "../store/actions/authActions";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,7 +13,10 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/auth/login", { username, password });
+      const response = await api.post("/auth/login", {
+        emailOrUsername,
+        password,
+      });
       dispatch(setToken(response.data.token));
       navigate("/notes");
     } catch (error) {
@@ -27,9 +30,9 @@ const Login = () => {
       <form onSubmit={handleLogin}>
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="EmailOrUsername"
+          value={emailOrUsername}
+          onChange={(e) => setEmailOrUsername(e.target.value)}
         />
         <input
           type="password"
