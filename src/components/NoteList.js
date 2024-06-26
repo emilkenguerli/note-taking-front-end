@@ -67,20 +67,20 @@ const NoteList = () => {
   const handleUserChange = (e) => {
     const value = e.target.value;
     if (value === "all") {
-      setSelectedUsers(users.map((user) => user._id));
+      setSelectedUsers([]); // Clear selected users when "Select All" is chosen
     } else {
       setSelectedUsers([value]);
     }
   };
 
   const handleSelectAllUsers = () => {
-    setSelectedUsers(usersWithNotes);
+    setSelectedUsers(users.map((user) => user._id)); // Select all users
   };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get("/user");
+        const response = await api.get("/users");
         const userData = Array.isArray(response.data)
           ? response.data
           : [response.data];
@@ -158,7 +158,7 @@ const NoteList = () => {
           <label>User:</label>
           <select
             onChange={handleUserChange}
-            value={selectedUsers.length > 0 ? selectedUsers[0] : "all"}
+            value={selectedUsers.length === 0 ? "all" : selectedUsers[0]}
           >
             <option value="all">Select All</option>
             {users.map((user) => (
