@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const Register = () => {
@@ -23,6 +24,7 @@ const Register = () => {
       navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
+      toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 

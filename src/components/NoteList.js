@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const NoteList = () => {
@@ -40,6 +41,7 @@ const NoteList = () => {
         setUsersWithNotes(response.data.usersWithNotes);
       } catch (error) {
         console.error("Failed to fetch notes:", error);
+        toast.error("Failed to fetch notes");
         setNotes([]); // Set an empty array on error
       }
     };
@@ -53,6 +55,7 @@ const NoteList = () => {
       setNotes(notes.filter((note) => note._id !== id));
     } catch (error) {
       console.error("Failed to delete note:", error);
+      toast.error(error.response?.data?.message || "Failed to delete note");
     }
   };
 
@@ -87,6 +90,7 @@ const NoteList = () => {
         setUsers(userData);
       } catch (error) {
         console.error("Failed to fetch users:", error);
+        toast.error("Failed to fetch users");
       }
     };
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 import { setToken } from "../store/actions/authActions";
 
@@ -21,6 +22,7 @@ const Login = () => {
       navigate("/notes");
     } catch (error) {
       console.error("Login failed:", error);
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 

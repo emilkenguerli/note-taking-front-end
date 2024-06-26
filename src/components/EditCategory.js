@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const EditCategory = () => {
@@ -16,6 +17,7 @@ const EditCategory = () => {
         setDescription(response.data.description);
       } catch (error) {
         console.error("Failed to fetch category:", error);
+        toast.error("Failed to fetch category");
       }
     };
 
@@ -29,6 +31,7 @@ const EditCategory = () => {
       navigate("/categories");
     } catch (error) {
       console.error("Failed to update category:", error);
+      toast.error(error.response?.data?.message || "Failed to update category");
     }
   };
 

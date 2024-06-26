@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const EditNote = () => {
@@ -22,6 +23,7 @@ const EditNote = () => {
         setIsPublic(note.public);
       } catch (error) {
         console.error("Failed to fetch note details:", error);
+        toast.error("Failed to fetch note details");
       }
     };
 
@@ -31,6 +33,7 @@ const EditNote = () => {
         setCategories(response.data.categories);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
+        toast.error("Failed to fetch categories");
       }
     };
 
@@ -50,6 +53,7 @@ const EditNote = () => {
       navigate("/notes");
     } catch (error) {
       console.error("Failed to update note:", error);
+      toast.error(error.response?.data?.message || "Failed to update note");
     }
   };
 

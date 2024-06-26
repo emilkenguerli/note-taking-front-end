@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const CreateCategory = () => {
@@ -14,6 +15,7 @@ const CreateCategory = () => {
       navigate("/categories");
     } catch (error) {
       console.error("Failed to create category:", error);
+      toast.error(error.response?.data?.message || "Failed to create category");
     }
   };
 

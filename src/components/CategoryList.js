@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const CategoryList = () => {
@@ -18,6 +19,7 @@ const CategoryList = () => {
         setCurrentPage(response.data.currentPage);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
+        toast.error("Failed to fetch categories");
       }
     };
 
@@ -30,6 +32,7 @@ const CategoryList = () => {
       setCategories(categories.filter((category) => category._id !== id));
     } catch (error) {
       console.error("Failed to delete category:", error);
+      toast.error(error.response?.data?.message || "Failed to delete category");
     }
   };
 
@@ -53,7 +56,7 @@ const CategoryList = () => {
               </Link>
               <button
                 onClick={() => handleDelete(category._id)}
-                style={styles.button}
+                style={{ ...styles.button, background: "#dc3545" }}
               >
                 Delete
               </button>

@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { store, persistor } from "./store/store";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
@@ -30,6 +32,17 @@ const App = () => {
             <Route path="/categories/edit/:id" element={<EditCategory />} />
           </Routes>
         </Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </PersistGate>
     </Provider>
   );

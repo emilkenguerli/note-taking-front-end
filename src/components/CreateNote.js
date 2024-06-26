@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../services/api";
 
 const CreateNote = () => {
@@ -17,6 +18,7 @@ const CreateNote = () => {
         setCategories(response.data.categories);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
+        toast.error("Failed to fetch categories");
       }
     };
 
@@ -35,6 +37,7 @@ const CreateNote = () => {
       navigate("/notes");
     } catch (error) {
       console.error("Failed to create note:", error);
+      toast.error(error.response?.data?.message || "Failed to create note");
     }
   };
 
