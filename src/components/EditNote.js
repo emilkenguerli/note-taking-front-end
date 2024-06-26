@@ -42,25 +42,67 @@ const EditCategory = () => {
   };
 
   return (
-    <div>
+    <div style={styles.container}>
       <h2>Edit Category</h2>
-      <form onSubmit={handleUpdate}>
+      <form onSubmit={handleUpdate} style={styles.form}>
         <input
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          style={styles.input}
         />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          style={{ ...styles.input, height: "100px" }}
         />
-        <button type="submit">Update</button>
+        <button type="submit" style={styles.button}>
+          Update
+        </button>
       </form>
-      <button onClick={handleDelete}>Delete</button>
+      <button
+        onClick={handleDelete}
+        style={{ ...styles.button, background: "#dc3545" }}
+      >
+        Delete
+      </button>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    background: "#f0f0f0",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "300px",
+  },
+  input: {
+    margin: "10px",
+    padding: "10px",
+    width: "100%",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+  button: {
+    padding: "10px 20px",
+    background: "#007bff",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    margin: "10px 0",
+  },
 };
 
 export default EditCategory;

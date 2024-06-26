@@ -25,25 +25,60 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div style={styles.container}>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} style={styles.form}>
         <input
           type="text"
-          placeholder="EmailOrUsername"
+          placeholder="Email or Username"
           value={emailOrUsername}
           onChange={(e) => setEmailOrUsername(e.target.value)}
+          style={styles.input}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
         />
-        <button type="submit">Login</button>
+        <button type="submit" style={styles.button}>
+          Login
+        </button>
       </form>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    background: "#f0f0f0",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  input: {
+    margin: "10px",
+    padding: "10px",
+    width: "200px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+  button: {
+    padding: "10px 20px",
+    background: "#007bff",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
 };
 
 export default Login;
