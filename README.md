@@ -16,7 +16,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Create an .env file
 
-Use the .env.example as reference
+Use the `.env.example` file as reference
 
 ### Ensure the backend server is running on the correct port
 
