@@ -14,7 +14,9 @@ Before you begin, ensure you have met the following requirements:
 
 `git clone https://github.com/emilkenguerli/note-taking-front-end.git`
 
-### Create an .env using the example as reference
+### Create an .env file
+
+Use the .env.example as reference
 
 ### Ensure the backend server is running on the correct port
 
