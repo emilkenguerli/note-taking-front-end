@@ -16,6 +16,10 @@ Before you begin, ensure you have met the following requirements:
 
 ### Create an .env using the example as reference
 
+### Ensure the backend server is running on the correct port
+
+Follow the README on `https://github.com/emilkenguerli/note-taking-api`
+
 ## Available Scripts
 
 In the project directory, you can run:
